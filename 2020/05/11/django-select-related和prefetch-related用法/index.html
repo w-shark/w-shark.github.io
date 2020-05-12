@@ -20,30 +20,43 @@
     var CONFIG = {"hostname":"w-shark.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="行者无疆，恒以致远。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="shark">
-<meta property="og:url" content="https://w-shark.top/index.html">
+  <meta name="description" content="select_related语法：select_related(*fields)  返回一个QuerySet，它将“遵循”外键关系，并在执行查询时选择外键相关对象数据。实际是使用SQL的INNER JOIN关键字。所以select_related可以提高性能，避免数据库重复查询。用一个示例更容易理解，有如下模型。 书和作者是多对一关系，作者和城市也是多对一关系。 123456class City(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django select_related和prefetch_related用法">
+<meta property="og:url" content="https://w-shark.top/2020/05/11/django-select-related%E5%92%8Cprefetch-related%E7%94%A8%E6%B3%95/index.html">
 <meta property="og:site_name" content="shark">
-<meta property="og:description" content="行者无疆，恒以致远。">
+<meta property="og:description" content="select_related语法：select_related(*fields)  返回一个QuerySet，它将“遵循”外键关系，并在执行查询时选择外键相关对象数据。实际是使用SQL的INNER JOIN关键字。所以select_related可以提高性能，避免数据库重复查询。用一个示例更容易理解，有如下模型。 书和作者是多对一关系，作者和城市也是多对一关系。 123456class City(">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YtLmGt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YN6eAg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YNcJMt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YNgotg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YNWl0P.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YNhMIf.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YNhvY8.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YNTWGV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/12/YN7mLQ.png">
+<meta property="article:published_time" content="2020-05-11T08:03:48.000Z">
+<meta property="article:modified_time" content="2020-05-12T11:53:07.187Z">
 <meta property="article:author" content="w-shark">
+<meta property="article:tag" content="django select_related prefetch_related python">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/05/12/YtLmGt.png">
 
-<link rel="canonical" href="https://w-shark.top/">
+<link rel="canonical" href="https://w-shark.top/2020/05/11/django-select-related%E5%92%8Cprefetch-related%E7%94%A8%E6%B3%95/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>shark</title>
+  <title>django select_related和prefetch_related用法 | shark</title>
   
 
 
@@ -204,9 +217,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -222,10 +236,9 @@
       <meta itemprop="name" content="shark">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/11/django-select-related%E5%92%8Cprefetch-related%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">django select_related和prefetch_related用法</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          django select_related和prefetch_related用法
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -303,7 +316,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="select-related"><a href="#select-related" class="headerlink" title="select_related"></a>select_related</h3><p>语法：<br><code>select_related(*fields)</code> </p>
+        <h3 id="select-related"><a href="#select-related" class="headerlink" title="select_related"></a>select_related</h3><p>语法：<br><code>select_related(*fields)</code> </p>
 <p>返回一个QuerySet，它将“遵循”外键关系，并在执行查询时选择外键相关对象数据。实际是使用SQL的<code>INNER JOIN关</code>键字。所以select_related可以提高性能，避免数据库重复查询。<br>用一个示例更容易理解，有如下模型。</p>
 <p>书和作者是多对一关系，作者和城市也是多对一关系。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">City</span><span class="params">(models. Model)</span>:</span></span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">120</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br></pre></td></tr></table></figure>
@@ -464,245 +477,42 @@
 <li>Djnago官方文档 </li>
 </ol>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://w-shark.top/2020/05/06/vmstat/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="w-shark">
-      <meta itemprop="description" content="行者无疆，恒以致远。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="shark">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/05/06/vmstat/" class="post-title-link" itemprop="url">vmstat用法</a>
-        </h2>
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/django/" rel="tag"><i class="fa fa-tag"></i> django</a>
+          </div>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
+        
 
-              <time title="创建时间：2020-05-06 18:38:56" itemprop="dateCreated datePublished" datetime="2020-05-06T18:38:56+08:00">2020-05-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-11 15:04:46" itemprop="dateModified" datetime="2020-05-11T15:04:46+08:00">2020-05-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/%E5%91%BD%E4%BB%A4/" itemprop="url" rel="index"><span itemprop="name">命令</span></a>
-                </span>
-            </span>
 
-          
-            <span id="/2020/05/06/vmstat/" class="post-meta-item leancloud_visitors" data-flag-title="vmstat用法" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/05/06/vmstat/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/05/06/vmstat/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>109</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="什么是-vmstat"><a href="#什么是-vmstat" class="headerlink" title="什么是 vmstat"></a>什么是 vmstat</h2><p>vmstat 是一个标准的工具，它会报告 Linux 系统的虚拟内存统计。vmstat 会报告有关进程、内存、分页、块 IO、陷阱（中断）和 cpu 活动的信息。它可以帮助 Linux 管理员在解决问题时识别系统瓶颈。</p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/06/vmstat/" rel="prev" title="vmstat用法">
+      <i class="fa fa-chevron-left"></i> vmstat用法
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://w-shark.top/2020/04/30/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="w-shark">
-      <meta itemprop="description" content="行者无疆，恒以致远。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="shark">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/30/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-30 19:18:51" itemprop="dateCreated datePublished" datetime="2020-04-30T19:18:51+08:00">2020-04-30</time>
-            </span>
-
-          
-            <span id="/2020/04/30/hello-world/" class="post-meta-item leancloud_visitors" data-flag-title="Hello World" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/04/30/hello-world/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/30/hello-world/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>357</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -749,6 +559,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#select-related"><span class="nav-number">1.</span> <span class="nav-text">select_related</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#未使用select-relate"><span class="nav-number">1.1.</span> <span class="nav-text">未使用select_relate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用select-relate"><span class="nav-number">1.2.</span> <span class="nav-text">使用select_relate</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prefetch-related"><span class="nav-number">2.</span> <span class="nav-text">prefetch_related</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#未使用prefetch-related"><span class="nav-number">2.1.</span> <span class="nav-text">未使用prefetch_related</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用prefetch-related"><span class="nav-number">2.2.</span> <span class="nav-text">使用prefetch_related</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子查询导致缓存失效"><span class="nav-number">2.3.</span> <span class="nav-text">子查询导致缓存失效</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多级关联查询"><span class="nav-number">2.4.</span> <span class="nav-text">多级关联查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多、多对一混合查询"><span class="nav-number">2.5.</span> <span class="nav-text">多对多、多对一混合查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Prefetch对象进一步控制prefetch操作"><span class="nav-number">2.6.</span> <span class="nav-text">使用Prefetch对象进一步控制prefetch操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
