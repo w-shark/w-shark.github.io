@@ -8,13 +8,81 @@
 <p>书和作者是多对一关系，作者和城市也是多对一关系。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">City</span><span class="params">(models. Model)</span>:</span></span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">120</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br></pre></td></tr></table></figure>
 
-<p>City数据：<br>| id | name   |<br>|-|-|<br>|  1 | 北京   |<br>|  2 | 上海   |<br>|  3 | 广州   |</p>
+<p>City数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>北京</td>
+</tr>
+<tr>
+<td>2</td>
+<td>上海</td>
+</tr>
+<tr>
+<td>3</td>
+<td>广州</td>
+</tr>
+</tbody></table>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(models. Model)</span>:</span></span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">120</span>, verbose_name=<span class="string">'名字'</span>)</span><br><span class="line">    hometown = models.ForeignKey(City, on_delete=models.CASCADE)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br></pre></td></tr></table></figure>
 
-<p>Persion数据：<br>| id | name   | hometown_id |<br>|-|-|-|<br>|  1 | 张三   |           1 |<br>|  2 | 张一   |           1 |<br>|  3 | 李四   |           2 |</p>
+<p>Persion数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>hometown_id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>张三</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>张一</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>李四</td>
+<td>2</td>
+</tr>
+</tbody></table>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(models. Model)</span>:</span></span><br><span class="line"></span><br><span class="line">    name = models.CharField(max_length=<span class="number">120</span>)</span><br><span class="line"></span><br><span class="line">    author = models. ForeignKey(Person, on_delete=models. CASCADE)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br></pre></td></tr></table></figure>
 
-<p>Book数据：<br>| id | name   | author_id |<br>|-|-|-|<br>|  1 | c++    |         2 |<br>|  2 | java   |         2 |<br>|  3 | python |         3 |</p>
+<p>Book数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>author_id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>c++</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>java</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>python</td>
+<td>3</td>
+</tr>
+</tbody></table>
 <p>新建模板，用表格输出</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">border</span>=<span class="string">"1"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>book<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>author<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">th</span>&gt;</span>hometown<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    &#123;% for b in all_book %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123; b.name &#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123; b.author &#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">td</span>&gt;</span>&#123;&#123; b.author.hometown &#125;&#125;<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -30,7 +98,51 @@
 <p>页面执行的sql如下</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`people_book`</span> </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> <span class="string">`people_person`</span> <span class="keyword">ON</span> ( <span class="string">`people_book`</span> . <span class="string">`author_id`</span> = <span class="string">`people_person`</span> . <span class="string">`id`</span> ) </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> <span class="string">`people_city`</span> <span class="keyword">ON</span> ( <span class="string">`people_person`</span> . <span class="string">`hometown_id`</span> = <span class="string">`people_city`</span> . <span class="string">`id`</span> )</span><br></pre></td></tr></table></figure>
 
-<p>执行结果：<br>| id | name   | author_id | id | name   | hometown_id | id | name   |<br>|-|-|-|-|-|-|-|-|<br>|  1 | c++    |         2 |  2 | 张一   |           1 |  1 | 北京   |<br>|  2 | java   |         2 |  2 | 张一   |           1 |  1 | 北京   |<br>|  3 | python |         3 |  3 | 李四   |           2 |  2 | 上海   |</p>
+<p>执行结果：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>author_id</th>
+<th>id</th>
+<th>name</th>
+<th>hometown_id</th>
+<th>id</th>
+<th>name</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>c++</td>
+<td>2</td>
+<td>2</td>
+<td>张一</td>
+<td>1</td>
+<td>1</td>
+<td>北京</td>
+</tr>
+<tr>
+<td>2</td>
+<td>java</td>
+<td>2</td>
+<td>2</td>
+<td>张一</td>
+<td>1</td>
+<td>1</td>
+<td>北京</td>
+</tr>
+<tr>
+<td>3</td>
+<td>python</td>
+<td>3</td>
+<td>3</td>
+<td>李四</td>
+<td>2</td>
+<td>2</td>
+<td>上海</td>
+</tr>
+</tbody></table>
 <p>使用1条sql就可以完美解决。</p>
 <p>使用select_relate可用于ForeignKey和OneToOneField，如果一个模型有多个外键，可以使用链式写法： <code>select_related(&#39;foo&#39;, &#39;bar&#39;)</code> 或者 <code>select_related(&#39;foo&#39;).select_related(&#39;bar&#39;)</code> </p>
 <h3 id="prefetch-related"><a href="#prefetch-related" class="headerlink" title="prefetch_related"></a>prefetch_related</h3><p>这与select_related具有相似的功能，因为两者均旨在防止由于访问相关对象而引起的数据库查询泛滥，但是策略却大不相同。prefetch_related主要用于many-to-many关系，使用SQL的 <code>IN</code> 关键字。</p>
@@ -62,7 +174,7 @@
 <td>广州</td>
 </tr>
 </tbody></table>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Topping(models.Model):</span><br><span class="line">    name &#x3D; models.CharField(max_length&#x3D;30)</span><br><span class="line">    city &#x3D; models.ForeignKey(City, on_delete&#x3D;models.CASCADE, null&#x3D;True)</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return self.name</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Topping</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">30</span>)</span><br><span class="line">    city = models.ForeignKey(City, on_delete=models.CASCADE, null=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br></pre></td></tr></table></figure>
 
 <p>菜品数据：</p>
 <table>
@@ -106,10 +218,58 @@
 </tbody></table>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pizza</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">50</span>)</span><br><span class="line">    toppings = models.ManyToManyField(Topping)</span><br><span class="line">    spicy = models.BooleanField(default=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"%s (%s)"</span> % (</span><br><span class="line">            self.name,</span><br><span class="line">            <span class="string">", "</span>.join(topping.name <span class="keyword">for</span> topping <span class="keyword">in</span> self.toppings.all()),</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
 
-<p>披萨数据：<br>| id | name         | spicy |<br>|-|-|-|<br>|  1 | 海鲜披萨     |     1 |<br>|  2 | 牛肉披萨     |     0 |<br>|  3 | 鸡肉披萨     |     0 |<br>|  4 | 蔬菜披萨     |     0 |</p>
+<p>披萨数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>spicy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>海鲜披萨</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>牛肉披萨</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>鸡肉披萨</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>蔬菜披萨</td>
+<td>0</td>
+</tr>
+</tbody></table>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Restaurant</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name = models.CharField(max_length=<span class="number">50</span>)</span><br><span class="line">    pizzas = models.ManyToManyField(Pizza, related_name=<span class="string">'restaurants'</span>)</span><br><span class="line">    best_pizza = models.ForeignKey(Pizza, related_name=<span class="string">'championed_by'</span>, on_delete=models.CASCADE)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br></pre></td></tr></table></figure>
 
-<p>饭店数据:<br>| id | name| best_pizza_id |<br>|-|-|-|<br>|  1 | 必胜客    |             1 |<br>|  2 | 达美      |             3 |</p>
+<p>饭店数据:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>best_pizza_id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>必胜客</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>达美</td>
+<td>3</td>
+</tr>
+</tbody></table>
 <p>还有一个饭店和披萨的多对多数据:</p>
 <table>
 <thead>
